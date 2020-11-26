@@ -1,0 +1,6 @@
+# python environment files
+bin/
+include/
+lib/
+share/
+pyvenv.cfg
