@@ -15,3 +15,13 @@ class Product(ArticleBase):
     starts = models.IntegerField()
     active = models.BooleanField(default=True)
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
+
+
+class Messages(models.Model):
+    first_name = models.CharField(max_length=25)
+    email = models.EmailField()
+    subject = models.CharField(max_length=30)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.subject

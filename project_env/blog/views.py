@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from shop.models import Product, ProductCategory
+from shop.models import Product, ProductCategory, Messages
 
 def index(request):
     latests = Product.objects.order_by("-time_stamp")[:6]
@@ -25,6 +25,13 @@ def products(request):
 
 
 def contact(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+        Messages.objects.create(first_name=name, email=email, subject=subject, message=message)
+        return render(request, 'index.html', {})
     return render(request, 'contact.html', {})
 
 
