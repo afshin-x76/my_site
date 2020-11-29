@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'shop',
+    'users',
+    'phonenumber_field',
     'ckeditor',
 ]
 
@@ -130,3 +132,5 @@ STATIC_URL = '/media/'
 STATICFILES_DIRS = [BASE_DIR / 'static_in_env', ]
 STATIC_ROOT = BASE_DIR / "static"
 MEDIA_ROOT = BASE_DIR / "media"
+
+AUTH_USER_MODEL = 'users.CustomUser'

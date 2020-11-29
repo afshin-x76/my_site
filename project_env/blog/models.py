@@ -32,6 +32,8 @@ class ArticleBase(models.Model):
 
 
 
+
+
 # class Post(ArticleBase):
 #     content = RichTextField()
 #     view = models.IntegerField()
