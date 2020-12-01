@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% load static %}
+<html lang="en" >
+
+
+<head>
+{% include "head.html" %}
+</head>
+
+
+<body>
+{% include "header.html" %}
+<style>
+    .required:after {
+        content:" *";
+        color:red;
+    }
+    .form-control {
+        width:50%;
+    }
+    .bg-img {
+        height:600px;
+        background-image: url("{% static 'img/211 0.jpg' %}");
+        min-height:100%;
+        background-size: cover;
+    }
+    label {
+        color:black;
+    }
+    .top-div {
+      position: relative;
+	    padding-top: 85px;
+    }
+
+</style>
+<div class="bg-img top-div">
+  <form method='POST' action='.' class="form-container" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="col-12 col-lg-9 offset-2">
+    <div class="row">
+      <div class="col-5">
+          {{form.username.errors}}
+          <label for={{form.username.id_for_label}} class="required">UserName:</label>
+          {{form.username}}
+      </div>
+      <div class="col-5">
+          {{form.email.errors}}
+          <label for={{form.email.id_for_label}} class="required">Email:</label>
+          {{form.email}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        {{form.password1.errors}}
+
+        <label for={{form.password1.id_for_label}} class="required">Password:</label>
+        {{form.password1}}
+      </div>
+      <div class="col-5">
+        {{form.password2.errors}}
+
+        <label for={{form.password2.id_for_label}} class="required">Password Confirmation:</label>
+        {{form.password2}}
+      </div>
+    </div>
+    <div class="row">
+      <label class="alert alert-dark">Below Fields are Optional</label>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        {{form.first_name.errors}}
+
+        <label for={{form.first_name.id_for_label}}>First Name:</label>
+        {{form.first_name}}
+      </div>
+      <div class="col-5">
+        {{form.last_name.errors}}
+
+        <label for={{form.last_name.id_for_label}}>Last Name:</label>
+        {{form.last_name}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        {{form.age.errors}}
+
+        <label for={{form.age.id_for_label}}>Choose your age:</label>
+        {{form.age}}
+      </div>
+      <div class="col-5">
+        {{form.profile_picture.errors}}
+
+        <label for={{form.profile_picture.id_for_label}}>Pick your Profile:</label>
+        {{form.profile_picture}}
+      </div>
+    </div>
+    <div class="row pt-3">
+      <button type="submit">Submit</button>
+    </div>
+  </div>
+  </form>
+</div>
+{% include "scripts.html" %}
+</body>
+
+
+</html

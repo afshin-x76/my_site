@@ -9,8 +9,9 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- Header -->
+    <div class="">
     <header class="">
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-expand-lg pb-5">
         <div class="container">
           <a class="navbar-brand" href="index.html"><h2>Sixteen <em>Clothing</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +21,6 @@
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Home
-                  
                 </a>
               </li> 
               <li class="nav-item">
@@ -32,8 +32,21 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
               </li>
+              {% if request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Log In </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">SignUp</a>
+              </li>
+              {% endif %}
             </ul>
           </div>
         </div>
       </nav>
     </header>
+    </div>

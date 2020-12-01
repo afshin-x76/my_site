@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% load static %}
+<html lang="en" >
+
+
+<head>
+{% include "head.html" %}
+</head>
+
+
+<body>
+  {% include "header.html" %}
+  <style>
+    .top-div {
+      padding-top: 80px;
+      text-align: center;
+      position: relative;
+    }
+    label{
+        color: white;
+    }
+    .bg-img {
+        height:600px;
+        background:url("{% static 'img/Purple-Background-Free-Images.jpg'%}");
+        background-size: cover;
+    }
+    .badge {
+        font-size:20px;  
+    }
+  </style>
+<div class="top-div">
+<div class="bg-img pt-5">
+  <form action="." method="post">
+  {% csrf_token %}
+    <div class="col-3 col-lg-4 offset-4 pt-2 black">
+      <div class="container">
+        {{form.username.errors}}
+        <label for={{form.username.id_for_label}} class="badge badge-primary">UserName</label>
+        {{form.username}}
+      </div>
+      <div class="container py-4">
+        {{form.password.errors}}
+        <label for={{form.password.id_for_label}} class="badge badge-primary">Password</label>
+        {{form.password}}
+      </div>
+      <div class="offset-1 center pb-4">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+{% include "scripts.html" %}
+</body>
+
+
+</html

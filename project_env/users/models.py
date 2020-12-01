@@ -60,8 +60,8 @@ class CustomUser(AbstractUser, PermissionsMixin):
         choices=age_choice,
         default=18
     )
-    profile_picture = models.ImageField()
-    phone_number = PhoneNumberField(unique=True)
+    profile_picture = models.ImageField(null=True, blank=True)
+    phonenumber_field = models.CharField(max_length=12, default="no number")
     is_author = models.BooleanField(default=False)
 
     objects = UserManager()
