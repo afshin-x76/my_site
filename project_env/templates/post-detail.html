@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+.avatar {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.top-div {
+      position: relative;
+    padding-top: 85px;
+}
+p {
+    font-weight:300;
+}
+h6 {
+    font-weight:300;
+    transform: translateY(+20%);
+}
+h6.pipe {
+    font-weight:lighter;
+}
+h6.date {
+    font-weight:220;
+    font-size:small;
+}
+h6.comment {
+    font-weight:220;
+    font-size:small;
+}
+.intent {
+    text-indent:1em;
+}
+h6.username {
+    font-size:20px;
+    font-weight:normal;
+}
+h6.date{
+    font-size:small;
+    font-weight:150;
+}
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+</style>
+
+<div class="top-div">
+  <div class="col-8 offset-2 pt-5">
+    <img src="{{ post.thumbnail.url }}" width=115%>
+    <div class="row py-3">
+        <h6 class="px-4">{{post.category}}</h6>
+      </div>
+      <div class="row">
+        <a href="#"><h2 class="pb-2">{{post.title}}</h2></a>
+      </div>
+      <div class="row pb-4">
+        <a href="#"><img src="{{post.owner.profile_picture.url}}" alt="Avatar" class="avatar"></a>
+        <h6 class="pipe" style=text-indent:1em;>|</h6>
+        <h6 class="comment" style=text-indent:1em;>{{post.comment}} Comments</h6>
+        <h6 class="pipe" style=text-indent:1em;>|</h6>
+        <h6 class="date" style=text-indent:1em;>{{post.time_stamp|timesince}} ago</h6>
+      </div>
+      <p class="pb-5">{{post.overview}}</p>
+      <p>{{post.content|safe}}
+    </div>
+    <div class="comments offset-2">
+      <h3>Post Comments</h3>
+      {% for comment in post.comments.all %}
+      <div class="contatiner pt-5">
+        <div class="row">
+        <img src="{{comment.writer.profile_picture.url}}" alt="Avatar" class="avatar">
+        <div class="col-2 col-lg-6" style=text-align:left;>
+            <h6 class="username">{{comment.writer.username}}</h6>
+            <h6 class="timestamp pt-1">{{comment.timestap}}</h6>
+            <p class="comment pt-3">{{comment.comment}}</p>
+        </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% if request.user.is_authenticated %}
+      <div class="comment-form col-lg-12 pt-5">
+        <div class="col-lg-8">
+          <form action="." method="POST">
+            {% csrf_token %}
+            {{form}}
+            <div class="pt-4">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% else %}
+        <h4 class="pt-4">Sorry, But You have to Log in for comments</h4>
+        <a href="{% url 'login' %}"><button type="Button">Click Here For Login</button></a>
+
+      {% endif %}
+    </div>
+  </div>
+
+
+</div>
+
+
+{% endblock content %}

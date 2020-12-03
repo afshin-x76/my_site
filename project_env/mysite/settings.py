@@ -32,9 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +41,7 @@ INSTALLED_APPS = [
     'blog',
     'shop',
     'users',
-    'phonenumber_field',
+    'posts',
     'ckeditor',
 ]
 
@@ -76,6 +73,8 @@ TEMPLATES = [
     },
 ]
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -83,19 +82,6 @@ AUTHENTICATION_BACKENDS = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
-        }
-    }
-}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -145,6 +131,13 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'height': 300,
+        'width': 600,
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/

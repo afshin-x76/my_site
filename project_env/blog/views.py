@@ -1,17 +1,22 @@
-from django.shortcuts import render, reverse
+from django.shortcuts import render, reverse, get_object_or_404
 from shop.models import Product, ProductCategory, Messages
 from users.forms import CreateUserForm, UserLoginForm
 from django.contrib.auth import logout as my_logout
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as my_login
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
+from posts.models import Posts, Comments
+from posts.forms import PostCreate, CommentForm
+from users.models import CustomUser
 
 
 def index(request):
-    latests = Product.objects.order_by("-time_stamp")[:6]
+    latest_products = Product.objects.order_by("-time_stamp")[:6]
+    latest_posts = Posts.objects.order_by("-time_stamp")
     context = {
-        'latests': latests
+        'latest_products': latest_products,
+        'latest_posts': latest_posts,
     }
     return render(request, 'index.html', context)
 
@@ -78,3 +83,52 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 
+def posts(request):
+    posts = Posts.objects.all()
+    return render(request, 'posts.html', {'posts': posts})
+
+def post_create(request):
+    form = PostCreate()
+    if request.method == 'POST':
+        form = PostCreate(request.POST, request.FILES)
+        print("is post!!")
+        if form.is_valid():
+            print("is valid")
+            form.instance.owner = request.user
+            form.save()
+            print("eeeeeeeeeeeeeeeeeeeeee")
+            return HttpResponseRedirect(reverse('index'))
+    return render(request, 'create-post.html', {'form': form})
+
+
+def post_update(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    form = PostCreate(request.POST, request.FILES, instance=post)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('posts'))
+    return render(request, "create-post.html", {'form': form})
+
+
+def post_detail(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    form = CommentForm()
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.instance.writer = request.user
+            form.instance.post = post
+            form.save()
+            return HttpResponseRedirect(reverse('post-detail', args=pk))
+    context = {
+        'post': post,
+        'form': form,
+    }
+    return render(request, 'post-detail.html', context)
+
+
+def post_delete(request, pk):
+    post = get_object_or_404(Posts, pk=pk)
+    post.delete()
+    return HttpResponseRedirect(reverse('posts'))

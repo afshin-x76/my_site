@@ -28,6 +28,10 @@
     .badge {
         font-size:20px;  
     }
+    .bold {
+      font-weight:bold;
+      font-size:15px;
+    }
   </style>
 <div class="top-div">
 <div class="bg-img pt-5">
@@ -44,11 +48,15 @@
         <label for={{form.password.id_for_label}} class="badge badge-primary">Password</label>
         {{form.password}}
       </div>
-      <div class="offset-1 center pb-4">
-        <button class="btn btn-primary" type="submit">Submit</button>
+      <div class="col pb-4">
+        <button class="btn btn-primary" type="submit">Login</button>
+      </div>
+      </form>
+      <div class="col">
+        <p class="bold pb-3">___________New in Here?___________</p>
+        <a href="{% url 'signup' %}"><button type="Button" class="btn btn-primary">SignUp Now</button></a>
       </div>
     </div>
-  </form>
 </div>
 {% include "scripts.html" %}
 </body>

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load myfilters %}
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.avatar {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+p {
+    font-weight:300;
+}
+h6 {
+    font-weight:300;
+    transform: translateY(+20%);
+}
+h6.pipe {
+    font-weight:lighter;
+}
+h6.date {
+    font-weight:220;
+    font-size:small;
+}
+h6.comment {
+    font-weight:220;
+    font-size:small;
+}
+.indent {
+    text-indent:1em;
+}
+</style>
+
+
+    <!-- Page Content -->
+    <div class="page-heading products-heading header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+              <h4>new arrivals</h4>
+              <h2>sixteen products</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="latest-posts">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2>Latest Posts</h2>
+              <a href="{% url 'products' %}" ><h6 style=text-align:right;>view all posts</h6></a>
+            </div>
+          </div>
+          {% for post in posts %}
+            <div class="col-md-6">
+              <div class="posts-item">
+                <a href="#"><img src="{{ post.thumbnail.url }}" width=100% alt=""></a>
+                <div class="down-content">
+                  <div class="row">
+                    <h6>{{post.time_stamp}}</h6>
+                    {% if request.user == post.owner %}
+                      <a href="{% url 'post-update' pk=post.pk %}"><h6 style=text-indent:5em;>update</h6></a>
+                      <a href="{% url 'post-delete' pk=post.pk %}"><h6 style=text-indent:5em;>Delete</h6></a>
+                    {% endif %}
+                  </div>
+                  <a href="{% url 'post-detail' pk=post.pk %}" class="pl-3"><h4 style="color:black;font-size:30px;">{{post.title}}</h4></a>
+                  <p>{{ post.overview }}</p>
+                  <footer class="row py-4"> 
+                    <a href="{% url 'post-detail' pk=post.pk %}"><img src="{{post.owner.profile_picture.url}}" alt="Avatar" class="avatar"></a>
+                    <h6 class="pipe indent" >|</h6>
+                    <i class="fa fa-comments-o indent" style="font-size:24px" ></i>
+                    <h6 class="comment indent" >{{post.comment_count}} Comments</h6>
+                    <h6 class="pipe indent" >|</h6>
+                    
+                    <i class="fa fa-clock-o indent" style="font-size:24px" ></i>
+                    <h6 class="date indent" >{{post.time_stamp|timesince}} ago</h6>
+                  </footer>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  
+
+
+  
+
+
+{% endblock content %}
+

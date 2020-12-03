@@ -3,7 +3,42 @@
 {% load myfilters %}
 {% block content %}
 
-    
+<style>
+.avatar {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+p {
+    font-weight:300;
+}
+h6 {
+    font-weight:300;
+    transform: translateY(+20%);
+}
+h6.pipe {
+    font-weight:lighter;
+}
+h6.date {
+    font-weight:220;
+    font-size:small;
+}
+h6.comment {
+    font-weight:220;
+    font-size:small;
+}
+.intent {
+    text-indent:1em;
+}
+</style>
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
@@ -62,6 +97,47 @@
       </div>
     </div>
 
+    <!--
+    Latest Posts are Here:)
+    -->
+    <div class="col-10 pt-5 offset-1">
+      {% for post in latest_posts %}
+      <div class="row pb-4">
+        {% if forloop.counter|side %}
+        <div class="col">
+          <a href="{% url 'post-detail' pk=post.pk %}"><img src="{{post.thumbnail.url}}" width=100%></a>
+        </div>
+        {% endif %}
+        <div class="col pt-3">
+            <div class="row pb-3">
+              <h6 class="px-4">{{post.category}}</h6>
+            </div>
+            <div class="row">
+              <a href="{% url 'post-detail' pk=post.pk %}"><h2>{{post.title}}</h2></a>
+            </div>
+            <p>{{post.overview}}</p>
+            <footer class="row pt-4">
+              <a href="{% url 'post-detail' pk=post.pk %}"><img src="{{post.owner.profile_picture.url}}" alt="Avatar" class="avatar"></a>
+              <h6 class="pipe" style=text-indent:1em;>|</h6>
+              <h6 class="comment" style=text-indent:1em;>{{post.comment}} Comments</h6>
+              <h6 class="pipe" style=text-indent:1em;>|</h6>
+              <h6 class="date" style=text-indent:1em;>{{post.time_stamp|timesince}} ago</h6>
+            </footer>
+            <div class="row">
+              <a href="{% url 'post-update' pk=post.pk %}"><h6 style=text-indent:5em;>update</h6></a>
+              <a href="{% url 'post-delete' pk=post.pk %}"><h6 style=text-indent:5em;>Delete</h6></a>
+              
+            </div>
+        </div>
+        {% if forloop.counter|side == False %}
+        <div class="col">
+          <a href="#"><img src="{{post.thumbnail.url}}" width=100%></a>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
     <div class="best-features">
       <div class="container">
         <div class="row">
@@ -91,5 +167,7 @@
         </div>
       </div>
     </div>
+
+    
 
 {% endblock content %}    

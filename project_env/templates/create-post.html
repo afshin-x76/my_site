@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+.top-div {
+  padding-top: 80px;
+  }
+td {
+    padding: 15px;
+}
+</style>
+
+<div class="top-div">
+<div class="col pt-4 offset-2">
+<form action="." method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<table width=100%>
+  <tr>
+      <td><label for={{form.title.id_for_label}}>Title:</label>
+      {{form.title.errors}}
+      </td>
+      <td>{{form.title}}</td>
+  </tr>
+  <tr>
+    <td>
+      <label for={{form.thumbnail.id_for_label}}>thumbnail:</label>
+      {{form.thumbnail.errors}}</td>
+    <td>{{form.thumbnail}}</td>
+  </tr>
+  <tr>
+    <td>
+      <label for={{form.overview.id_for_label}}>Overview:</label>
+      {{form.overview.errors}}</td>
+
+    <td>{{form.overview}}</td>
+  </tr>
+  <tr>
+    <td>
+      <label for={{form.content.id_for_label}}>Content:</label>
+      {{form.content.errors}}</td>
+    <td>{{form.content}}</td>
+  </tr>
+  <tr>
+    <td>
+      <label for={{form.category.id_for_label}}>Category:</label>
+      {{form.category.errors}}</td>
+    <td>{{form.category}}</td>
+  </tr>
+</table>
+<div class="offset-3">
+    <button class="btn btn-dark" type="submit">Submit</button>
+</div>
+</form>
+</div>
+</div>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock content %}

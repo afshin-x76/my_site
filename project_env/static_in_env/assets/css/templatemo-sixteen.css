@@ -403,11 +403,11 @@ header .navbar {
 
 /* Latest Produtcs */
 
-.latest-products {
+.latest-products .latest-posts {
 	margin-top: 100px;
 }
 
-.latest-products .section-heading a {
+.latest-products .latest-posts .section-heading a {
 	float: right;
 	margin-top: -35px;
 	text-transform: uppercase;
@@ -664,8 +664,6 @@ footer .inner-content p a {
 	border-color: #f33f3f;
 	color: #fff;
 }
-
-
 
 /* Team Members */
 
@@ -954,7 +952,7 @@ footer .inner-content p a {
 		font-size: 36px;
 		letter-spacing: 0.5px;
 	}
-	.latest-products .section-heading a {
+	.latest-products .latest-posts .section-heading a {
 		float: none;
 		margin-top: 0px;
 		display: block;
