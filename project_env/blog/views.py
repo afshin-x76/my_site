@@ -11,6 +11,7 @@ from posts.models import Category as PostCategory
 from posts.forms import PostCreate, CommentForm
 from users.models import CustomUser
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -29,11 +30,19 @@ def products(request):
     products = Product.objects.all()
     categories = ProductCategory.objects.values_list()
     category_list = []
+
+    objects = list(products)
+    pagination = Paginator(objects, 4)
+    page_number = request.GET.get('page')
+    page_obj = pagination.get_page(page_number)
+
+
     for i in categories:
         category_list.append(i[1])
     context = {
         'products': products,
-        'categories': category_list
+        'categories': category_list,
+        'page_obj': page_obj
     }
     return render(request, 'products.html', context)
 
@@ -92,9 +101,17 @@ def posts(request):
     for i in category_list:
         categories.append(i[1])
     
+    objects = list(posts)
+    pagination = Paginator(objects, 1)
+    page_number = request.GET.get('page')
+    page_obj = pagination.get_page(page_number)
+    
+
+    print(page_obj)
     context = {
         'categories': categories,
-        'posts': posts
+        'posts': posts, 
+        'page_obj': page_obj,
     }
 
     return render(request, 'posts.html', context)

@@ -75,20 +75,10 @@ h6.comment {
       </div>
     </div>
 
-    <div class="latest-posts">
+    <div class="latest-posts pt-4">
       <div class="container">
         <div class="row">
-          <div class="col-md-12">
-            <div class="filters">
-              <ul>
-                  <li data-filter=".all">All</li>
-                {% for cat in categories %}
-                  <li data-filter=".{{cat}}">{{cat}}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          {% for post in posts %}
+          {% for post in page_obj %}
             <div class="col-md-6">
               <div class="posts-item">
                 <a href="#"><img src="{{ post.thumbnail.url }}" width=100% alt=""></a>
@@ -116,8 +106,20 @@ h6.comment {
             </div>
           {% endfor %}
         </div>
+        <div class="offset-5">
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a>
+          {% endif %}
+          <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+          </span>
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-double-right"></i></a>
+          {% endif %}
+        </div>
       </div>
     </div>
+
   
 
 

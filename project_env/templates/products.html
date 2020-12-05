@@ -34,7 +34,7 @@
           <div class="col-md-12">
             <div class="filters-content">
                 <div class="row grid">
-                  {% for product in products %}
+                  {% for product in page_obj %}
                     <div class="col-lg-4 col-md-4 all {{product.category}}">
                       <div class="product-item">
                         <a href="#"><img src="{{ product.thumbnail.url }}" alt=""></a>
@@ -56,14 +56,16 @@
 
             </div>
           </div>
-          <div class="col-md-12">
-            <ul class="pages">
-              <li><a href="#">1</a></li>
-              <li class="active"><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
-            </ul>
+          <div class="offset-5">
+            {% if page_obj.has_previous %}
+              <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-double-left"></i></a>
+            {% endif %}
+            <span class="current">
+              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}"><i class="fa fa-angle-double-right"></i></a>
+            {% endif %}
           </div>
         </div>
       </div>
