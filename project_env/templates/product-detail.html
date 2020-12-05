@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<style>
+.top-div {
+    padding-top: 85px;
+}
+.avatar {
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+</style>
+<div class="top-div">
+  <div class="col-lg-10 offset-2">
+      <div class="col-lg-7">
+        <img src="{{product.thumbnail.url}}" width=100%>
+      </div>
+      <div class="row">
+        <div class="col-1 col-lg-3 pt-4" >
+            <h4>{{product.title}}</h4>
+            <h4>Price: {{product.price}}$</h4>
+        </div>
+        <div class="col-2 " >
+        <form method="POST" action="{% url 'add-to-cart' product.pk%}">
+            {% csrf_token %}
+          <label for="fname">Number:</label>
+          <input type="text" placeholder="1" id="fname" name="fname">
+          <button type="submit">Submit</button>
+        </form>
+        <a href="{{ product.get_remove_from_cart_url }}">
+        <button class="btn btn-danger">Delete This item order</button>
+        </a>
+        </div>
+  </div>
+</div>
+{% endblock content %}

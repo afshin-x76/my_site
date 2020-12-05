@@ -1,5 +1,5 @@
 from django.shortcuts import render, reverse, get_object_or_404
-from shop.models import Product, ProductCategory, Messages
+from shop.models import Product, ProductCategory, Messages, OrderProduct, Order
 from users.forms import CreateUserForm, UserLoginForm
 from django.contrib.auth import logout as my_logout
 from django.contrib.auth import authenticate, get_user_model
@@ -12,7 +12,7 @@ from posts.forms import PostCreate, CommentForm
 from users.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from django.contrib import messages
 
 def index(request):
     latest_products = Product.objects.order_by("-time_stamp")[:6]
@@ -185,4 +185,62 @@ def postpreference(request, pk, userpreference):
             eachpost.save()
     return HttpResponseRedirect(reverse('post-detail', args=[pk]))
         
-        
+
+def product_detail(request, pk, order_quantinity=0):
+    product = get_object_or_404(Product, pk=pk)
+    context = {
+        'product': product,
+        "quantinity": order_quantinity,
+    }
+    return render(request, "product-detail.html", context)
+
+
+def add_to_cart(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    orderitems = OrderProduct.objects.get_or_create(user=request.user, product=product)[0]
+    order = Order.objects.get_or_create(user=request.user)[0]
+    
+    if order.products.filter(pk=orderitems.pk).exists():
+        """
+        if order exist, add 1 to its quantinity
+        """
+        orderitems.quantinity += 1
+        orderitems.save()
+        messages.info(request, 'orderitems updated.')
+
+    else:
+        """
+        create a new orderitems for users order if doesn't exist
+        add 1 quantinity of that product
+        """ 
+        order.products.add(orderitems)
+        orderitems.save()
+        messages.info(request, 'product item added to orderitems successfully.')
+
+
+    return HttpResponseRedirect(reverse('product-detail', args=[pk]))
+
+
+def remove_from_cart(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    orderitems = OrderProduct.objects.get_or_create(user=request.user, product=product)[0]
+    order = Order.objects.get_or_create(user=request.user)[0]
+
+
+    if order.products.filter(pk=orderitems.pk).exists():
+        """
+        if order exist, add 1 to its quantinity
+        """
+        order.products.remove(orderitems)
+        orderitems.delete()
+        messages.warning(request, 'orderitems deleted from orders.')
+
+    else:
+        messages.warning(request, "there wasn't any active orderitems")
+    
+    return HttpResponseRedirect(reverse('product-detail', args=[pk]))
+
+    
+
+    
+

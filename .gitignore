@@ -6,3 +6,6 @@ share/
 pyvenv.cfg
 *__pycache__
 .vscode
+*static_in_env/
+*static/
+

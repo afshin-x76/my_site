@@ -22,24 +22,15 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <div class="filters">
-              <ul>
-                  <li data-filter=".all">All</li>
-                {% for cat in categories %}
-                  <li data-filter=".{{cat}}">{{cat}}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-12">
             <div class="filters-content">
                 <div class="row grid">
                   {% for product in page_obj %}
                     <div class="col-lg-4 col-md-4 all {{product.category}}">
                       <div class="product-item">
-                        <a href="#"><img src="{{ product.thumbnail.url }}" alt=""></a>
+                        <a href="{% url 'product-detail' product.pk %}"><img src="{{ product.thumbnail.url }}" alt=""></a>
                         <div class="down-content">
                           <a href="#"><h4>{{product.title}}</h4></a>
+                          <label class="badge badge-{{product.get_label_display}}">New</label>
                           <h6>{{product.price}}$</h6>
                           <p>{{product.overview}}</p>
                           <ul class="stars">

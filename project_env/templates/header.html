@@ -1,3 +1,5 @@
+{% load myfilters %}
+    
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
         <div class="jumper">
@@ -51,9 +53,12 @@
                 <a class="nav-link" href="{% url 'signup' %}">SignUp</a>
               </li>
               {% endif %}
+              <li class="nav-item">
+              <i class="fa fa-shopping-cart pt-2" style="font-size:24px;color:white;text-align:left;text-indent:3em;"></i>
+              </li>
+              <h6 class="pt-3" style=color:white;>{{request.user|item_count}}</h6>
             </ul>
           </div>
-        </div>
       </nav>
     </header>
     </div>

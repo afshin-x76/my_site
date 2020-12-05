@@ -1,11 +1,15 @@
 from django.urls import path, re_path, include
 from .views import (index, about, products, post_create, post_update, postpreference,
-                    contact, signup, login, logout, posts, post_detail, post_delete)
+                    contact, signup, login, logout, posts, post_detail, post_delete,
+                    product_detail, add_to_cart, remove_from_cart)
 
 
 urlpatterns = [
     path('', index, name="index"),
     path('products/', products, name="products"),
+    path('product/<pk>/', product_detail, name="product-detail"),
+    path('product/<pk>/add-to-cart/',add_to_cart, name="add-to-cart"),
+    path('product/<pk>/remove-from-cart/',remove_from_cart, name="remove-from-cart"),
     path('about/', about, name="about"),
     path('contact/', contact, name="contact"),
     path('accounts/signup/', signup, name="signup"),
