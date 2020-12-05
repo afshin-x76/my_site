@@ -1,5 +1,5 @@
 from django.urls import path, re_path, include
-from .views import (index, about, products, post_create, post_update,
+from .views import (index, about, products, post_create, post_update, postpreference,
                     contact, signup, login, logout, posts, post_detail, post_delete)
 
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('post/<pk>/', post_detail, name="post-detail"),
     path('post/<pk>/update/', post_update, name="post-update"),
     path('post/<pk>/delete', post_delete, name="post-delete"),
+    path('post/<int:pk>/preference/<int:userpreference>/',postpreference, name="post-preference"),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
 ]

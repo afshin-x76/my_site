@@ -3,6 +3,8 @@ from blog.models import ArticleBase
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 
+
+
 User = get_user_model()
 
 
@@ -27,7 +29,21 @@ class Posts(ArticleBase):
     view = models.IntegerField(default=0)
     like = models.IntegerField(default=0)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    likes = models.IntegerField()
+    dislikes = models.IntegerField()
 
     @property
     def comment_count(self):
         return Comments.objects.filter(post=self).count()
+
+class Preference(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    value =  models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user) + ":" + str(self.post) + ":" + str(self.value)
+
+    class Meta:
+        unique_together = ("user", "post", "value")
+

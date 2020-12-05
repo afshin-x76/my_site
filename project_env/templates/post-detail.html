@@ -2,6 +2,32 @@
 {% block content %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <style>
+ button.like{
+	width: 30px;
+	height: 30px;
+	margin-left:10px;
+	line-heigth: 50px;
+	border-radius: 50%;
+	color: rgba(0,150,136 ,1);
+	background-color:rgba(38,166,154 ,0.3);
+	border-color: rgba(0,150,136 ,1);
+	border-width: 1px;
+	font-size: 15px;
+}
+
+button.dislike{
+	width: 30px;
+	height: 30px;
+	margin-left:10px;
+	line-heigth: 50px;
+	border-radius: 50%;
+	color: rgba(255,82,82 ,1);
+	background-color: rgba(255,138,128 ,0.3);
+	border-color: rgba(255,82,82 ,1);
+	border-width: 1px;
+	font-size: 15px;
+  }
+
 .avatar {
   vertical-align: middle;
   width: 40px;
@@ -62,15 +88,31 @@ h6.date{
       <div class="row pb-4">
         <a href="#"><img src="{{post.owner.profile_picture.url}}" alt="Avatar" class="avatar"></a>
         <h6 class="pipe" style=text-indent:1em;>|</h6>
-        <h6 class="comment" style=text-indent:1em;>{{post.comment}} Comments</h6>
+        <h6 class="comment" style=text-indent:1em;>{{post.comment_count}} Comments</h6>
         <h6 class="pipe" style=text-indent:1em;>|</h6>
         <h6 class="date" style=text-indent:1em;>{{post.time_stamp|timesince}} ago</h6>
+        <h6 class="pipe" style=text-indent:1em;>|</h6>
+        <form method="POST" action="/post/{{post.pk}}/preference/1/">
+          {% csrf_token %}
+            
+            <label>{{post.likes}}</label>
+            <button type="submit" class="dislike">
+            	<i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+            </button>
+        </form>
+        <form method="POST" action="/post/{{post.pk}}/preference/2/">
+        {% csrf_token %}
+          <label>{{post.dislikes}}</label>
+          <button type="submit" class="like">
+          	<i class="fa fa-thumbs-o-up" aria-hidden="true"></i>
+          </button>
+        </form>
       </div>
       <p class="pb-5">{{post.overview}}</p>
       <p>{{post.content|safe}}
     </div>
     <div class="comments offset-2">
-      <h3>Post Comments</h3>
+      <h2 style="color:green;">Post Comments</h2>
       {% for comment in post.comments.all %}
       <div class="contatiner pt-5">
         <div class="row">

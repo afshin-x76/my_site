@@ -6,9 +6,11 @@ from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth import login as my_login
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
-from posts.models import Posts, Comments
+from posts.models import Posts, Comments, Preference
+from posts.models import Category as PostCategory
 from posts.forms import PostCreate, CommentForm
 from users.models import CustomUser
+from django.contrib.auth.decorators import login_required
 
 
 def index(request):
@@ -85,7 +87,17 @@ def logout(request):
 
 def posts(request):
     posts = Posts.objects.all()
-    return render(request, 'posts.html', {'posts': posts})
+    category_list = PostCategory.objects.values_list()
+    categories = []
+    for i in category_list:
+        categories.append(i[1])
+    
+    context = {
+        'categories': categories,
+        'posts': posts
+    }
+
+    return render(request, 'posts.html', context)
 
 def post_create(request):
     form = PostCreate()
@@ -120,7 +132,7 @@ def post_detail(request, pk):
             form.instance.writer = request.user
             form.instance.post = post
             form.save()
-            return HttpResponseRedirect(reverse('post-detail', args=pk))
+            return HttpResponseRedirect(reverse('post-detail', args=[pk]))
     context = {
         'post': post,
         'form': form,
@@ -132,3 +144,28 @@ def post_delete(request, pk):
     post = get_object_or_404(Posts, pk=pk)
     post.delete()
     return HttpResponseRedirect(reverse('posts'))
+
+@login_required
+def postpreference(request, pk, userpreference):
+    eachpost = get_object_or_404(Posts, pk=pk)
+    if request.method == "POST":
+        obj = Preference.objects.get_or_create(user=request.user, post=eachpost)
+        value_obj = obj[0].value
+        print(value_obj)
+        print(userpreference)
+        
+        if value_obj != userpreference:
+            if userpreference == 1:
+                eachpost.likes += 1
+                if value_obj ==2:
+                    eachpost.dislikes -= 1
+            elif userpreference == 2:
+                eachpost.dislikes += 1
+                if value_obj == 1:
+                    eachpost.likes -= 1
+            obj[0].value = userpreference
+            obj[0].save()
+            eachpost.save()
+    return HttpResponseRedirect(reverse('post-detail', args=[pk]))
+        
+        
