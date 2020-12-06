@@ -13,6 +13,7 @@ from users.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.contrib import messages
+from shop.forms import CheckOutForm
 
 def index(request):
     latest_products = Product.objects.order_by("-time_stamp")[:6]
@@ -263,4 +264,17 @@ def order_summary(request):
     return render(request, 'order-summary.html', {'orders': orders})
 
     
+def checkout(request):
+    form = CheckOutForm()
+    if request.method == 'POST':
+        form = CheckOutForm(request.POST)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            messages.success(request, "Checkout successfully added")
+            return HttpResponseRedirect(reverse('products'))
+        else:
+            messages.warning(request, "form is Corrupted!")
 
+    
+    return render(request, 'Checkout-page.html', {'form': form})

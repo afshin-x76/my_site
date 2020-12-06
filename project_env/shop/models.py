@@ -17,8 +17,41 @@ LABEL_CHOICES = [
     ('P','primary'),
     ('s', 'secondary'),
     ('D','danger'),
-
 ]
+STATE_COICES = [
+    ('ASH', 'آذربایجان شرقی'),
+    ('AGH', 'آذربایجان غربی'),
+    ('ARB', 'اردبیل'),
+    ('ES', 'اصفهان'),
+    ('AL', 'البرز'),
+    ('IL', 'ایلام'),
+    ('BSH', 'بوشهر'),
+    ('TEH', 'تهران'),
+    ('CHKH', 'چهارمحال و بختیاری'),
+    ('KHj', 'خراسان جنوبی'),
+    ('KHR', 'خراسان رضوی'),
+    ('KHSH', 'خراسان شمالی'),
+    ('KHZ', 'خوزستان '),
+    ('ZNJ', 'زنجان'),
+    ('SMN', 'سمنان'),
+    ('SB', 'سیستان و بلوچستان'),
+    ('FA', 'فارس'),
+    ('QHZ', 'قزوین'),
+    ('GHOM', 'قم'),
+    ('KRD', 'کردستان'),
+    ('KRM', 'کرمان'),
+    ('KRSH', 'کرمانشاه'),
+    ('KGB', 'کهگیلویه و بویراحمد'),
+    ('GOL', 'گلستان'),
+    ('GIL', 'گیلان'),
+    ('LOR', 'لرستان'),
+    ('MAZ', 'مازندران'),
+    ('MARZ', 'مرکزی'),
+    ('HRMZ', 'هرمزگان'),
+    ('HMDN', 'همدان'),
+    ('YAZD', 'یزد'),
+ ]
+
 
 
 class Product(ArticleBase):
@@ -62,6 +95,16 @@ class Order(models.Model):
         for product in self.products.all():
             total += product.get_total_price()
         return total
+
+
+class BillingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    state = models.CharField(choices=STATE_COICES, max_length=4, default='TEH')
+    address = models.TextField()
+    phone_number = models.IntegerField()
+    plaque = models.CharField(max_length=10)
+    
+
 
 class Messages(models.Model):
     first_name = models.CharField(max_length=25)
