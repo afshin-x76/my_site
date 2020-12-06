@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="top-div offset-2 col-md-8">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantinity</th>
+        <th scope="col">Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for order in orders.products.all %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>
+        <a href="{% url 'remove-from-cart' order.product.pk 'all' %}"><i class="fas fa-trash-alt mr-2" style=color:red;></i></a>
+        
+        {{order.product.title}}</td>
+        <td>{{order.product.price}}</td>
+
+        <td>
+        <a href="{% url 'remove-from-cart' order.product.pk 1 %}"><i class="fas fa-minus mr-2"></i></a>
+        {{order.quantinity}}
+        <a href="{% url 'add-to-cart' order.product.pk %}"><i class="fas fa-plus ml-2"></i></a></td>
+        <td>{{order.get_total_price}}</td>
+      </tr>
+    {% endfor %}
+    <tr>
+      <th scope="row"><b>.</b></th>
+      <td colspan="3"><b>Total</b></td>
+      <td><b>{{orders.get_total_price}}</b></td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn btn-warning float-right ml-4">Go To CheckOut</button>
+  <a href="{% url 'products' %}"><button class="btn btn-primary float-right">Back to Shopping</button></a>
+
+</div>
+
+{% endblock content %}

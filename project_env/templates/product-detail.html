@@ -3,7 +3,6 @@
 
 {% block content %}
 
-
 <style>
 .top-div {
     padding-top: 85px;
@@ -29,10 +28,10 @@
         <form method="POST" action="{% url 'add-to-cart' product.pk%}">
             {% csrf_token %}
           <label for="fname">Number:</label>
-          <input type="text" placeholder="1" id="fname" name="fname">
+          <input type="text" id="fname" name="quantinity" value=1>
           <button type="submit">Submit</button>
         </form>
-        <a href="{{ product.get_remove_from_cart_url }}">
+        <a href="{% url 'remove-from-cart' product.pk 'all' %}">
         <button class="btn btn-danger">Delete This item order</button>
         </a>
         </div>

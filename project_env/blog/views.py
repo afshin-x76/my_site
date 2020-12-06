@@ -186,16 +186,23 @@ def postpreference(request, pk, userpreference):
     return HttpResponseRedirect(reverse('post-detail', args=[pk]))
         
 
-def product_detail(request, pk, order_quantinity=0):
+def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {
         'product': product,
-        "quantinity": order_quantinity,
     }
     return render(request, "product-detail.html", context)
 
 
 def add_to_cart(request, pk):
+    # this line will give us the previous url like "/product/1/detail/"
+    prev_page = request.META.get('HTTP_REFERER').split("000")[1]
+    try:
+        quantin = int(request.POST['quantinity'])
+    except:
+        quantin = 1
+
+        
     product = get_object_or_404(Product, pk=pk)
     orderitems = OrderProduct.objects.get_or_create(user=request.user, product=product)[0]
     order = Order.objects.get_or_create(user=request.user)[0]
@@ -203,8 +210,8 @@ def add_to_cart(request, pk):
     if order.products.filter(pk=orderitems.pk).exists():
         """
         if order exist, add 1 to its quantinity
-        """
-        orderitems.quantinity += 1
+        """ 
+        orderitems.quantinity += quantin
         orderitems.save()
         messages.info(request, 'orderitems updated.')
 
@@ -217,11 +224,14 @@ def add_to_cart(request, pk):
         orderitems.save()
         messages.info(request, 'product item added to orderitems successfully.')
 
+    # redirect to previous url that defined in first line
+    return HttpResponseRedirect(prev_page)
 
-    return HttpResponseRedirect(reverse('product-detail', args=[pk]))
 
+def remove_from_cart(request, pk, how):
+    # this line will give us the previous url like "/product/1/detail/"
+    prev_page = request.META.get('HTTP_REFERER').split("000")[1]
 
-def remove_from_cart(request, pk):
     product = get_object_or_404(Product, pk=pk)
     orderitems = OrderProduct.objects.get_or_create(user=request.user, product=product)[0]
     order = Order.objects.get_or_create(user=request.user)[0]
@@ -231,16 +241,26 @@ def remove_from_cart(request, pk):
         """
         if order exist, add 1 to its quantinity
         """
-        order.products.remove(orderitems)
-        orderitems.delete()
-        messages.warning(request, 'orderitems deleted from orders.')
+        if how == "1":
+            orderitems.quantinity -= 1
+            orderitems.save()
+            messages.warning(request, '1 quantinity removed from orderitems deleted from orders.')
+        elif how == "all":
+            order.products.remove(orderitems)
+            orderitems.delete()
+            messages.warning(request, 'orderitems deleted from orders.')
+
 
     else:
         messages.warning(request, "there wasn't any active orderitems")
     
-    return HttpResponseRedirect(reverse('product-detail', args=[pk]))
+    # redirect to previous url that defined in first line
+    return HttpResponseRedirect(prev_page)
 
-    
+
+def order_summary(request):
+    orders = get_object_or_404(Order, user=request.user)
+    return render(request, 'order-summary.html', {'orders': orders})
 
     
 

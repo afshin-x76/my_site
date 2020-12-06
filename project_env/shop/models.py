@@ -44,6 +44,8 @@ class OrderProduct(models.Model):
     def __str__(self):
         return str(self.user) +':' + str(self.product.title) + ":" + str(self.quantinity)
 
+    def get_total_price(self):
+        return self.quantinity * self.product.price
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -54,7 +56,12 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
-
+    
+    def get_total_price(self):
+        total = 0
+        for product in self.products.all():
+            total += product.get_total_price()
+        return total
 
 class Messages(models.Model):
     first_name = models.CharField(max_length=25)
